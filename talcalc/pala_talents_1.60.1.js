@@ -204,8 +204,8 @@ window.TALENT_DATA = {
 						"col": 4
 					},
 					"icon": {
-						"id": 132325,
-						"name": "ability_thunderbolt"
+						"id": 135984,
+						"name": "spell_holy_unyieldingfaith"
 					},
 					"ranks": [
 						{
