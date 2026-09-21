@@ -13,6 +13,15 @@ Open `index.html` directly from disk, or host the folder anywhere static (e.g. G
 The data is a `.js` file rather than plain `.json` because browsers won't let a page opened from
 disk fetch a `.json`, but they will load a `<script>`.
 
+## Single-file build
+
+`spa.html` is the whole app in one minified file (page, CSS, JS, talent data and all icons inlined), handy for
+hosting or sharing. It is generated, so re-run this after editing the data file, the app or the icons:
+
+    powershell -ExecutionPolicy Bypass -File build.ps1
+
+The separate files stay the source of truth; `index.html` keeps reading the data file live.
+
 ## Behaviour
 
 - Left-click adds a point, right-click (or Shift-click / Delete key) removes one.

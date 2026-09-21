@@ -10,7 +10,8 @@
   const TALENTED_MAX = 5; // each rank of "Talented" starts talent points one level earlier
   const LEVEL_MAX = 60;
   const iconFile = (name) => encodeURIComponent(name.toLowerCase()) + ".jpg";
-  const ICON_LOCAL = (name) => `img/${iconFile(name)}`; // downloaded copies
+  const EMBEDDED = Boolean(window.TALENT_DATA); // spa.html ships the data and icons inside the page
+  const ICON_LOCAL = (name) => window.TALENT_ICONS?.[iconFile(name)] || `img/${iconFile(name)}`; // inlined or downloaded copies
   const ICON_REMOTE = (name) => `https://wow.zamimg.com/images/wow/icons/large/${iconFile(name)}`; // fallback for icons not downloaded yet
   const BUILD_KEY = "talcalc.build.v2";
 
@@ -257,7 +258,7 @@
         <div class="toolbar-buttons">
           <button type="button" data-action="copy">Copy link</button>
           <button type="button" data-action="reset-all">Reset all</button>
-          <button type="button" data-action="reload" title="Re-read the data file (also happens when you return to this tab)">Reload data</button>
+          ${EMBEDDED ? "" : `<button type="button" data-action="reload" title="Re-read the data file (also happens when you return to this tab)">Reload data</button>`}
         </div>
         <p class="status" role="status">${esc(message)}</p>
       </section>
@@ -501,7 +502,8 @@
   }
 
   // Editing the data file in another window and coming back should just work.
-  window.addEventListener("focus", () => { if (model) refreshData(true); });
+  if (!EMBEDDED) window.addEventListener("focus", () => { if (model) refreshData(true); });
 
-  loadData(false).then(applyData, (err) => showError(err.message));
+  if (EMBEDDED) applyData(window.TALENT_DATA);
+  else loadData(false).then(applyData, (err) => showError(err.message));
 })();
